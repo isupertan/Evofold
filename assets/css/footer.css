@@ -1,0 +1,139 @@
+.bottom-cta {
+  padding: 1.5rem 0 2rem;
+  /* background:
+    linear-gradient(135deg, rgba(5, 34, 29, 0.98), rgba(8, 63, 53, 0.92)),
+    linear-gradient(180deg, #021510 0%, #01100d 100%); */
+}
+
+.cta-panel {
+  position: relative;
+  overflow: hidden;
+  padding: 1.9rem 2.2rem 2.2rem;
+  /* background:
+    linear-gradient(145deg, rgba(4, 25, 21, 0.96) 0 58%, rgba(5, 34, 29, 0.96) 58% 100%); */
+}
+
+.cta-panel::before {
+  position: absolute;
+  inset: 0;
+  content: "";
+  /* background:
+    linear-gradient(145deg, transparent 0 53%, rgba(11, 48, 40, 0.86) 53% 100%),
+    linear-gradient(35deg, rgba(12, 52, 43, 0.3) 0 36%, transparent 36% 100%); */
+  pointer-events: none;
+}
+
+.footer-hero,
+.footer-lower {
+  position: relative;
+  z-index: 1;
+}
+
+.footer-hero {
+  min-height: 250px;
+}
+
+.footer-title {
+  max-width: 1000px;
+  margin: 0;
+  font-size: clamp(3rem, 6vw, 5rem);
+  font-weight: 800;
+  line-height: 0.92;
+}
+
+.title-line {
+  display: block;
+}
+
+.title-light {
+  color: #f5f0da;
+}
+
+.title-accent {
+  color: var(--accent-strong);
+}
+
+.footer-lower {
+  display: grid;
+  grid-template-columns: 1.1fr 1.6fr;
+  gap: 2rem;
+  align-items: end;
+  margin-top: 0.5rem;
+}
+
+.footer-offer {
+    margin: 0 0 5rem 19rem;
+    color: #f1edda;
+    font-size: 1.1rem;
+    line-height: 1.2;
+}
+
+.footer-brand-row {
+  display: flex;
+  align-items: center;
+}
+
+.footer-brandmark {
+  font-size: 1.9rem;
+  letter-spacing: 0.06rem;
+}
+
+.footer-contact-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.75rem;
+}
+
+.footer-contact-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  color: rgba(241, 237, 218, 0.88);
+  font-size: 0.95rem;
+  line-height: 1.25;
+}
+
+.footer-contact-item a,
+.footer-contact-item span {
+  color: rgba(241, 237, 218, 0.88);
+  text-decoration: none;
+}
+
+.footer-contact-item a:hover {
+  color: var(--accent-strong);
+  text-decoration: none;
+}
+
+@media (max-width: 991.98px) {
+  .footer-lower {
+    grid-template-columns: 1fr;
+  }
+
+  .footer-offer {
+    margin-left: 0;
+    margin-bottom: 2rem;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .cta-panel {
+    padding: 1.5rem;
+  }
+
+  .footer-hero {
+    min-height: auto;
+    margin-bottom: 2rem;
+  }
+
+  .footer-title {
+    font-size: 2.6rem;
+  }
+
+  .footer-contact-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .footer-brandmark {
+    font-size: 1.5rem;
+  }
+}

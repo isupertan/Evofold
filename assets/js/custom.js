@@ -5,6 +5,7 @@ document.addEventListener("DOMContentLoaded", function () {
   var whyTrack = whySlider ? whySlider.querySelector(".why-track") : null;
   var whyCards = whyTrack ? whyTrack.querySelectorAll(".reason-card") : [];
   var whyProgress = document.querySelector("[data-why-progress]");
+  var uspItems = Array.prototype.slice.call(document.querySelectorAll(".usp-item"));
   var capabilitySlider = document.querySelector("[data-capability-slider]");
   var capabilityTrack = capabilitySlider ? capabilitySlider.querySelector(".capability-grid") : null;
   var videoSlider = document.querySelector("[data-video-slider]");
@@ -117,6 +118,73 @@ document.addEventListener("DOMContentLoaded", function () {
         setFaqState(toggle, !isOpen);
       });
     });
+  }
+
+  if (uspItems.length) {
+    function playUspPreview(item) {
+      var previewVideo = item.querySelector(".usp-preview-media");
+
+      if (!previewVideo) {
+        return;
+      }
+
+      if (previewVideo.readyState === 0) {
+        previewVideo.load();
+      }
+
+      var playPromise = previewVideo.play();
+
+      if (playPromise && typeof playPromise.catch === "function") {
+        playPromise.catch(function () {});
+      }
+    }
+
+    function pauseUspPreview(item) {
+      var previewVideo = item.querySelector(".usp-preview-media");
+
+      if (!previewVideo) {
+        return;
+      }
+
+      previewVideo.pause();
+      previewVideo.currentTime = 0;
+    }
+
+    uspItems.forEach(function (item, index) {
+      item.addEventListener("mouseenter", function () {
+        uspItems.forEach(function (otherItem) {
+          if (otherItem !== item) {
+            pauseUspPreview(otherItem);
+          }
+        });
+
+        playUspPreview(item);
+      });
+
+      item.addEventListener("mouseleave", function () {
+        if (index !== 0) {
+          pauseUspPreview(item);
+        }
+      });
+
+      item.addEventListener("focusin", function () {
+        uspItems.forEach(function (otherItem) {
+          if (otherItem !== item) {
+            pauseUspPreview(otherItem);
+          }
+        });
+
+        playUspPreview(item);
+      });
+
+      item.addEventListener("focusout", function () {
+        if (index !== 0) {
+          pauseUspPreview(item);
+        }
+      });
+    });
+
+    playUspPreview(uspItems[0]);
   }
 
   if (whySlider && whyTrack && whyCards.length && whyProgress) {

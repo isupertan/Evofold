@@ -5,6 +5,8 @@ document.addEventListener("DOMContentLoaded", function () {
   var whyTrack = whySlider ? whySlider.querySelector(".why-track") : null;
   var whyCards = whyTrack ? whyTrack.querySelectorAll(".reason-card") : [];
   var whyProgress = document.querySelector("[data-why-progress]");
+  var capabilitySlider = document.querySelector("[data-capability-slider]");
+  var capabilityTrack = capabilitySlider ? capabilitySlider.querySelector(".capability-grid") : null;
   var videoSlider = document.querySelector("[data-video-slider]");
   var videoCards = videoSlider ? Array.prototype.slice.call(videoSlider.querySelectorAll(".video-card")) : [];
   var faqToggles = document.querySelectorAll(".faq-toggle");
@@ -199,6 +201,88 @@ document.addEventListener("DOMContentLoaded", function () {
     window.addEventListener("resize", updateWhySlider);
 
     updateWhySlider();
+  }
+
+  if (capabilitySlider && capabilityTrack) {
+    var isCapabilityDragging = false;
+    var capabilityDragStartX = 0;
+    var capabilityDragStartScroll = 0;
+    var capabilitySuppressClick = false;
+
+    capabilitySlider.addEventListener("wheel", function (event) {
+      if (window.innerWidth <= 767.98) {
+        return;
+      }
+
+      if (Math.abs(event.deltaY) > Math.abs(event.deltaX)) {
+        event.preventDefault();
+        capabilitySlider.scrollLeft += event.deltaY;
+      }
+    }, { passive: false });
+
+    capabilitySlider.addEventListener("pointerdown", function (event) {
+      if (window.innerWidth <= 767.98) {
+        return;
+      }
+
+      if (event.pointerType === "mouse" && event.button !== 0) {
+        return;
+      }
+
+      isCapabilityDragging = true;
+      capabilitySuppressClick = false;
+      capabilityDragStartX = event.clientX;
+      capabilityDragStartScroll = capabilitySlider.scrollLeft;
+      capabilitySlider.classList.add("is-dragging");
+      capabilitySlider.setPointerCapture(event.pointerId);
+    });
+
+    capabilitySlider.addEventListener("pointermove", function (event) {
+      if (!isCapabilityDragging) {
+        return;
+      }
+
+      var deltaX = event.clientX - capabilityDragStartX;
+
+      if (Math.abs(deltaX) > 4) {
+        capabilitySuppressClick = true;
+      }
+
+      capabilitySlider.scrollLeft = capabilityDragStartScroll - deltaX;
+    });
+
+    function stopCapabilityDrag(event) {
+      if (!isCapabilityDragging) {
+        return;
+      }
+
+      isCapabilityDragging = false;
+      capabilitySlider.classList.remove("is-dragging");
+
+      if (event) {
+        capabilitySlider.releasePointerCapture(event.pointerId);
+      }
+    }
+
+    capabilitySlider.addEventListener("pointerup", stopCapabilityDrag);
+    capabilitySlider.addEventListener("pointercancel", stopCapabilityDrag);
+    capabilitySlider.addEventListener("pointerleave", function (event) {
+      if (event.pointerType !== "mouse") {
+        return;
+      }
+
+      stopCapabilityDrag(event);
+    });
+
+    capabilityTrack.addEventListener("click", function (event) {
+      if (!capabilitySuppressClick) {
+        return;
+      }
+
+      event.preventDefault();
+      event.stopPropagation();
+      capabilitySuppressClick = false;
+    }, true);
   }
 
   if (videoSlider && videoCards.length) {
